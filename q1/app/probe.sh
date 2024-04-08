@@ -1,3 +1,4 @@
 #!/bin/bash
 set -x
-stress-ng  -t 2 -c 2
+rm -f /tmp/file
+for i in $(seq 1 50000); do echo $i >> /tmp/file; done
