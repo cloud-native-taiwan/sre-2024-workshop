@@ -18,4 +18,5 @@ RUN apt-get update && \
     stress-ng 
 
 COPY init.sh ./
+COPY probe.sh ./
 ENTRYPOINT ["/bin/bash", "./init.sh"]
