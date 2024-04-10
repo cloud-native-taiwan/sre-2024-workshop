@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: q3-app
+  labels:
+    app: q3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: q3
+  template:
+    metadata:
+      labels:
+        app: q3
+    spec:
+      containers:
+      - name: app
+        image: hwchiu/sre:q3
+        imagePullPolicy: Always
+        livenessProbe:
+          exec:
+            command:
+            - bash
+            - /probe.sh
+          initialDelaySeconds: 5
+          periodSeconds: 2
+          timeoutSeconds: 2
+          failureThreshold: 2
+        resources:
+          requests:
+            cpu: 0.1
+            memory: "100M"
+          limits:
+            cpu: 0.1
+            memory: "100M"
