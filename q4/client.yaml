@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: q4-client
+  labels:
+    app: q4
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: q4
+  template:
+    metadata:
+      labels:
+        app: q4
+    spec:
+      containers:
+      - name: app
+        image: hwchiu/sre:q4-client
+        imagePullPolicy: Always
+        env:
+        - name: HOST
+          value: "q4-server"
+        - name: PORT
+          value: "8080"
