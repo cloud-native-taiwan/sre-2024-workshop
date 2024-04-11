@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: q7-client
+  labels:
+    app: q7
+spec:
+  replicas: 8
+  selector:
+    matchLabels:
+      app: q7
+  template:
+    metadata:
+      labels:
+        app: q7
+    spec:
+      containers:
+      - name: app
+        image: hwchiu/sre:q7-client
+        imagePullPolicy: Always
+        env:
+        - name: HOST
+          value: "q7-server"
+        - name: PORT
+          value: "80"

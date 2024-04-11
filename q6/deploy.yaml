@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: q6-configmap
+data:
+  config: |
+    1=a
+    2=b
+    3=c
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: q6
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: q6
+  template:
+    metadata:
+      labels:
+        app: q6
+    spec:
+      containers:
+      - name: my-container
+        image: hwchiu/sre:q6
+        imagePullPolicy: Always
+        env:
+        - name: DATA_PATH
+          value: "/data/config.file"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /data/config.file
+          subPath: config
+          readOnly: true
+      volumes:
+      - name: config-volume
+        configMap:
+          name: q6-configmap
+
