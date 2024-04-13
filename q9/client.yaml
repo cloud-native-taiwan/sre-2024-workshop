@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: q9-client
+  labels:
+    app: q9
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: q9
+  template:
+    metadata:
+      labels:
+        app: q9
+    spec:
+      containers:
+      - name: app
+        image: hwchiu/sre:q9-client
+        imagePullPolicy: Always
+        env:
+        - name: HOST
+          value: "q9-server"
+        - name: PORT
+          value: "80"

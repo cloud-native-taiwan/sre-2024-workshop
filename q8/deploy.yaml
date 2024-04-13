@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: q8
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: q8
+  template:
+    metadata:
+      labels:
+        app: q8
+    spec:
+      containers:
+        - name: q8
+          image: hwchiu/sre:q8
+          imagePullPolicy: Always
+          env:
+            - name: DATA_PATH
+              value: /tmp/file
+          volumeMounts:
+            - name: config-storage
+              mountPath: /tmp
+      volumes:
+        - name: config-storage
+          persistentVolumeClaim:
+            claimName: config-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: config-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: q8-second
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: q8-sec
+  template:
+    metadata:
+      labels:
+        app: q8-sec
+    spec:
+      containers:
+        - name: q8
+          image: hwchiu/sre:q8
+          imagePullPolicy: Always
+          env:
+            - name: DATA_PATH
+              value: /tmp/file
+          volumeMounts:
+            - name: config-storage
+              mountPath: /tmp
+      volumes:
+        - name: config-storage
+          persistentVolumeClaim:
+            claimName: config-pvc
+

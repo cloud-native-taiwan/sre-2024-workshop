@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: q10-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: q10-server
+  template:
+    metadata:
+      labels:
+        app: q10-server
+    spec:
+      containers:
+      - name: q10-server
+        image: hwchiu/sre:q10-server
+        ports:
+        - containerPort: 5000
+        resources:
+          requests:
+            cpu: 0.1
+            memory: "100M"
+          limits:
+            cpu: 0.5
+            memory: "100M"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: q10-server
+  labels:
+    app: q10-server
+spec:
+  selector:
+    app: q10-server
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+    name: "metrics"
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: q10-server-monitor
+  labels:
+    release: prom
+spec:
+  selector:
+    matchLabels:
+      app: q10-server
+  endpoints:
+  - port: "metrics"
+    path: /metrics
