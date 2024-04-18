@@ -1,11 +1,10 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: q3-app
   labels:
     app: q3
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: q3

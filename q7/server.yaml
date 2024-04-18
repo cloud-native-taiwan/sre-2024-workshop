@@ -1,25 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: q4-server
+  name: q7-server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: q4-server
+      app: q7-server
   template:
     metadata:
       labels:
-        app: q4-server
+        app: q7-server
     spec:
       containers:
-      - name: q4-server
-        image: hwchiu/sre:q4-server
+      - name: q7-server
+        image: hwchiu/sre:q7-server
         ports:
         - containerPort: 8080
         env:
         - name: HOST
           value: "0.0.0.0"
+        - name: PORT
+          value: "8080"
         readinessProbe:
           httpGet:
             path: /
@@ -33,10 +35,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: q4-server
+  name: q7-server
 spec:
   selector:
-    app: q4-serverr
+    app: q7-server
   ports:
   - protocol: TCP
     port: 80
