@@ -23,7 +23,6 @@ spec:
             command:
             - bash
             - /probe.sh
-          initialDelaySeconds: 5
           periodSeconds: 15
           timeoutSeconds: 10
           failureThreshold: 3

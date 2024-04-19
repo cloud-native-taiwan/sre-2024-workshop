@@ -7,7 +7,7 @@ cleanup() {
 
 trap cleanup INT TERM
 
-sleep 30s
+sleep 60s
 stress-ng -m 10 --vm-bytes 256M --vm-keep -t 10
 
 while :; do
