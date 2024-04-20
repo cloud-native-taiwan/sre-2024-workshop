@@ -15,6 +15,7 @@ spec:
       containers:
       - name: q9-server
         image: hwchiu/sre:q9-server
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
 ---
