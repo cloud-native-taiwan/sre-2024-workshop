@@ -1,36 +1,34 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: q3-app
-  labels:
-    app: q3
+  name: q5
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: q3
+      app: q5
   template:
     metadata:
       labels:
-        app: q3
+        app: q5
     spec:
       containers:
-      - name: app
-        image: hwchiu/sre:q3
+      - name: my-container
+        image: hwchiu/sre:q5
         imagePullPolicy: Always
-        livenessProbe:
-          exec:
-            command:
-            - bash
-            - /probe.sh
-          initialDelaySeconds: 5
-          periodSeconds: 2
-          timeoutSeconds: 2
-          failureThreshold: 2
-        resources:
-          requests:
-            cpu: 0.1
-            memory: "100M"
-          limits:
-            cpu: 0.1
-            memory: "100M"
+        volumeMounts:
+        - name: my-volume
+          mountPath: /data
+        env:
+        - name: DATA_PATH
+          value: "/data/"
+
+  volumeClaimTemplates:
+  - metadata:
+      name: my-volume
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 3Gi 
