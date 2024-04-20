@@ -17,5 +17,5 @@ send_request() {
 while :; do
     response_code=$(send_request)
     echo "HTTP request sent to $HOST:$PORT, Response code: $response_code"
-    sleep 0.01
+    sleep 0.001
 done
